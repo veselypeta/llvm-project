@@ -19,7 +19,11 @@ namespace LIBC_NAMESPACE_DECL {
   inline_memset(dst, static_cast<uint8_t>(value), count);
   // avoid dead store elimination
   // The asm itself should also be sufficient to behave as a compiler barrier.
+#ifdef __CHERI_PURE_CAPABILITY__
+  asm("" : : "C"(dst) : "memory");
+#else
   asm("" : : "r"(dst) : "memory");
+#endif
   return dst;
 }
 

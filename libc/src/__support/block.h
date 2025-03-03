@@ -312,12 +312,21 @@ public:
   // These two functions may wrap around.
   LIBC_INLINE static uintptr_t next_possible_block_start(
       uintptr_t ptr, size_t usable_space_alignment = alignof(max_align_t)) {
+#ifdef __CHERI_PURE_CAPABILITY__
+    return __builtin_align_up(ptr + sizeof(Block), usable_space_alignment) -
+           sizeof(Block);
+#else
     return align_up(ptr + sizeof(Block), usable_space_alignment) -
            sizeof(Block);
+#endif
   }
   LIBC_INLINE static uintptr_t prev_possible_block_start(
       uintptr_t ptr, size_t usable_space_alignment = alignof(max_align_t)) {
+#ifdef __CHERI_PURE_CAPABILITY__
+    return __builtin_align_down(ptr, usable_space_alignment) - sizeof(Block);
+#else
     return align_down(ptr, usable_space_alignment) - sizeof(Block);
+#endif
   }
 
 private:
@@ -445,7 +454,7 @@ optional<Block *> Block::split(size_t new_inner_size,
       next_possible_block_start(start + min_outer_size, usable_space_alignment);
   if (next_block_start < start)
     return {};
-  size_t new_outer_size = next_block_start - start;
+  size_t new_outer_size = static_cast<size_t>(next_block_start - start);
   LIBC_ASSERT(new_outer_size % alignof(max_align_t) == 0 &&
               "new size must be aligned to max_align_t");
 

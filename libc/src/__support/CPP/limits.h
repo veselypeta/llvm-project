@@ -85,6 +85,15 @@ template <>
 struct numeric_limits<__uint128_t>
     : public internal::integer_impl<__uint128_t, 0, ~__uint128_t(0)> {};
 #endif
+#ifdef __CHERI__
+template <>
+struct numeric_limits<__intcap>
+    : public internal::integer_impl<long, LONG_MIN, LONG_MAX> {};
+
+template <>
+struct numeric_limits<unsigned __intcap>
+    : public internal::integer_impl<unsigned long, 0, ULONG_MAX> {};
+#endif
 
 } // namespace cpp
 } // namespace LIBC_NAMESPACE_DECL

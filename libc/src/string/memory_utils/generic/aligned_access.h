@@ -57,10 +57,12 @@ inline_memcpy_aligned_access_32bit(Ptr __restrict dst, CPtr __restrict src,
   constexpr size_t kAlign = sizeof(uint32_t);
   if (count <= 2 * kAlign)
     return inline_memcpy_byte_per_byte(dst, src, count);
-  size_t bytes_to_dst_align = distance_to_align_up<kAlign>(dst);
+  size_t bytes_to_dst_align =
+      static_cast<size_t>(distance_to_align_up<kAlign>(dst));
   inline_memcpy_byte_per_byte(dst, src, bytes_to_dst_align);
   size_t offset = bytes_to_dst_align;
-  size_t src_alignment = distance_to_align_down<kAlign>(src + offset);
+  size_t src_alignment =
+      static_cast<size_t>(distance_to_align_down<kAlign>(src + offset));
   for (; offset < count - kAlign; offset += kAlign) {
     uint32_t value = load32_aligned(src, offset, src_alignment);
     store32_aligned<uint32_t>(value, dst, offset);
@@ -75,10 +77,10 @@ inline_memcpy_aligned_access_64bit(Ptr __restrict dst, CPtr __restrict src,
   constexpr size_t kAlign = sizeof(uint64_t);
   if (count <= 2 * kAlign)
     return inline_memcpy_byte_per_byte(dst, src, count);
-  size_t bytes_to_dst_align = distance_to_align_up<kAlign>(dst);
+  size_t bytes_to_dst_align = static_cast<size_t>(distance_to_align_up<kAlign>(dst));
   inline_memcpy_byte_per_byte(dst, src, bytes_to_dst_align);
   size_t offset = bytes_to_dst_align;
-  size_t src_alignment = distance_to_align_down<kAlign>(src + offset);
+  size_t src_alignment = static_cast<size_t>(distance_to_align_down<kAlign>(src + offset));
   for (; offset < count - kAlign; offset += kAlign) {
     uint64_t value = load64_aligned(src, offset, src_alignment);
     store64_aligned<uint64_t>(value, dst, offset);
@@ -96,7 +98,8 @@ inline_memset_aligned_access_32bit(Ptr dst, uint8_t value, size_t count) {
   constexpr size_t kAlign = sizeof(uint32_t);
   if (count <= 2 * kAlign)
     return inline_memset_byte_per_byte(dst, value, count);
-  size_t bytes_to_dst_align = distance_to_align_up<kAlign>(dst);
+  size_t bytes_to_dst_align =
+      static_cast<size_t>(distance_to_align_up<kAlign>(dst));
   inline_memset_byte_per_byte(dst, value, bytes_to_dst_align);
   size_t offset = bytes_to_dst_align;
   for (; offset < count - kAlign; offset += kAlign)
@@ -109,7 +112,7 @@ inline_memset_aligned_access_64bit(Ptr dst, uint8_t value, size_t count) {
   constexpr size_t kAlign = sizeof(uint64_t);
   if (count <= 2 * kAlign)
     return inline_memset_byte_per_byte(dst, value, count);
-  size_t bytes_to_dst_align = distance_to_align_up<kAlign>(dst);
+  size_t bytes_to_dst_align = static_cast<size_t>(distance_to_align_up<kAlign>(dst));
   inline_memset_byte_per_byte(dst, value, bytes_to_dst_align);
   size_t offset = bytes_to_dst_align;
   for (; offset < count - kAlign; offset += kAlign)
@@ -126,11 +129,11 @@ inline_bcmp_aligned_access_32bit(CPtr p1, CPtr p2, size_t count) {
   constexpr size_t kAlign = sizeof(uint32_t);
   if (count <= 2 * kAlign)
     return inline_bcmp_byte_per_byte(p1, p2, count);
-  size_t bytes_to_p1_align = distance_to_align_up<kAlign>(p1);
+  size_t bytes_to_p1_align = static_cast<size_t>(distance_to_align_up<kAlign>(p1));
   if (auto value = inline_bcmp_byte_per_byte(p1, p2, bytes_to_p1_align))
     return value;
   size_t offset = bytes_to_p1_align;
-  size_t p2_alignment = distance_to_align_down<kAlign>(p2 + offset);
+  size_t p2_alignment = static_cast<size_t>(distance_to_align_down<kAlign>(p2 + offset));
   for (; offset < count - kAlign; offset += kAlign) {
     uint32_t a = load32_aligned<uint32_t>(p1, offset);
     uint32_t b = load32_aligned(p2, offset, p2_alignment);
@@ -145,11 +148,11 @@ inline_bcmp_aligned_access_64bit(CPtr p1, CPtr p2, size_t count) {
   constexpr size_t kAlign = sizeof(uint64_t);
   if (count <= 2 * kAlign)
     return inline_bcmp_byte_per_byte(p1, p2, count);
-  size_t bytes_to_p1_align = distance_to_align_up<kAlign>(p1);
+  size_t bytes_to_p1_align = static_cast<size_t>(distance_to_align_up<kAlign>(p1));
   if (auto value = inline_bcmp_byte_per_byte(p1, p2, bytes_to_p1_align))
     return value;
   size_t offset = bytes_to_p1_align;
-  size_t p2_alignment = distance_to_align_down<kAlign>(p2 + offset);
+  size_t p2_alignment = static_cast<size_t>(distance_to_align_down<kAlign>(p2 + offset));
   for (; offset < count - kAlign; offset += kAlign) {
     uint64_t a = load64_aligned<uint64_t>(p1, offset);
     uint64_t b = load64_aligned(p2, offset, p2_alignment);
@@ -168,11 +171,11 @@ inline_memcmp_aligned_access_32bit(CPtr p1, CPtr p2, size_t count) {
   constexpr size_t kAlign = sizeof(uint32_t);
   if (count <= 2 * kAlign)
     return inline_memcmp_byte_per_byte(p1, p2, count);
-  size_t bytes_to_p1_align = distance_to_align_up<kAlign>(p1);
+  size_t bytes_to_p1_align = static_cast<size_t>(distance_to_align_up<kAlign>(p1));
   if (auto value = inline_memcmp_byte_per_byte(p1, p2, bytes_to_p1_align))
     return value;
   size_t offset = bytes_to_p1_align;
-  size_t p2_alignment = distance_to_align_down<kAlign>(p2 + offset);
+  size_t p2_alignment = static_cast<size_t>(distance_to_align_down<kAlign>(p2 + offset));
   for (; offset < count - kAlign; offset += kAlign) {
     uint32_t a = load32_aligned<uint32_t>(p1, offset);
     uint32_t b = load32_aligned(p2, offset, p2_alignment);
@@ -187,11 +190,11 @@ inline_memcmp_aligned_access_64bit(CPtr p1, CPtr p2, size_t count) {
   constexpr size_t kAlign = sizeof(uint64_t);
   if (count <= 2 * kAlign)
     return inline_memcmp_byte_per_byte(p1, p2, count);
-  size_t bytes_to_p1_align = distance_to_align_up<kAlign>(p1);
+  size_t bytes_to_p1_align = static_cast<size_t>(distance_to_align_up<kAlign>(p1));
   if (auto value = inline_memcmp_byte_per_byte(p1, p2, bytes_to_p1_align))
     return value;
   size_t offset = bytes_to_p1_align;
-  size_t p2_alignment = distance_to_align_down<kAlign>(p2 + offset);
+  size_t p2_alignment = static_cast<size_t>(distance_to_align_down<kAlign>(p2 + offset));
   for (; offset < count - kAlign; offset += kAlign) {
     uint64_t a = load64_aligned<uint64_t>(p1, offset);
     uint64_t b = load64_aligned(p2, offset, p2_alignment);

@@ -39,7 +39,9 @@ LIBC_INLINE uintmax_t apply_length_modifier(uintmax_t num,
   case LengthModifier::t:
     // We don't have unsigned ptrdiff so uintptr_t is used, since we need an
     // unsigned type and ptrdiff is usually the same size as a pointer.
+#ifndef __CHERI_PURE_CAPABILITY__
     static_assert(sizeof(ptrdiff_t) == sizeof(uintptr_t));
+#endif
     return num & cpp::numeric_limits<uintptr_t>::max();
   case LengthModifier::j:
     return num; // j is intmax, so no mask is necessary.

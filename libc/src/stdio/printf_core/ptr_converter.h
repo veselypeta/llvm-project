@@ -31,7 +31,7 @@ LIBC_INLINE int convert_pointer(Writer *writer, const FormatSection &to_conv) {
   new_conv.flags =
       static_cast<FormatFlags>(to_conv.flags | FormatFlags::ALTERNATE_FORM);
   new_conv.length_modifier = LengthModifier::t;
-  new_conv.conv_val_raw = reinterpret_cast<uintptr_t>(to_conv.conv_val_ptr);
+  new_conv.conv_val_raw = (unsigned long long)reinterpret_cast<uintptr_t>(to_conv.conv_val_ptr);
   return convert_int(writer, new_conv);
 }
 
