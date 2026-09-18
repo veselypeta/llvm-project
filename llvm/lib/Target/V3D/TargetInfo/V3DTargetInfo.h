@@ -1,0 +1,11 @@
+#ifndef LLVM_LIB_TARGET_V3D_TARGETINFO_V3DTARGETINFO_H
+#define LLVM_LIB_TARGET_V3D_TARGETINFO_V3DTARGETINFO_H
+
+namespace llvm {
+
+class Target;
+
+Target &getTheV3DTarget();
+
+} // namespace llvm
+#endif // LLVM_LIB_TARGET_V3D_TARGETINFO_V3DTARGETINFO_H
