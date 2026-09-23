@@ -26,7 +26,7 @@ std::unique_ptr<MCObjectTargetWriter> createV3DELFObjectWriter(uint8_t OSABI);
 #define GET_REGINFO_ENUM
 #include "V3DGenRegisterInfo.inc"
 
-#define GET_INSTR_INFO_ENUM
+#define GET_INSTRINFO_ENUM
 #define GET_INTRINFO_MC_HELPER_DECLS
 #define GET_INSTR_INFO_OPERAND_ENUM
 #include "V3DGenInstrInfo.inc"
