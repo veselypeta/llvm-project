@@ -13,8 +13,6 @@ class MCAsmBackend;
 class MCObjectTargetWriter;
 class MCContext;
 
-
-
 MCCodeEmitter *createV3DMCCodeEmitter(const MCInstrInfo &MCII, MCContext &Ctx);
 
 MCAsmBackend *createV3DAsmBackend(const Target &T, const MCSubtargetInfo &STI,

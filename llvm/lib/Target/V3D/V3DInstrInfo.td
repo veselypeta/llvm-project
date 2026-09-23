@@ -1,5 +1,4 @@
 
-
 class V3DInst<dag outs, dag ins, string asmstr, list<dag> pattern> 
       : Instruction {
   let Namespace = "V3D";
